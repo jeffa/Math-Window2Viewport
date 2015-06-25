@@ -71,21 +71,37 @@ Constructs object. Required parameters:
 
 =over 8
 
-=item * C<Wb> world window bottom
+=item * C<Wb>
 
-=item * C<Wt> world window top
+  world window bottom
 
-=item * C<Wl> world window left
+=item * C<Wt>
 
-=item * C<Wr> world window right
+  world window top
 
-=item * C<Vb> viewport bottom
+=item * C<Wl>
 
-=item * C<Vt> viewport top
+  world window left
 
-=item * C<Vl> viewport left
+=item * C<Wr>
 
-=item * C<Vr> viewport right
+  world window right
+
+=item * C<Vb>
+
+  viewport bottom
+
+=item * C<Vt>
+
+  viewport top
+
+=item * C<Vl>
+
+  viewport left
+
+=item * C<Vr>
+
+  viewport right
 
 =back
 
