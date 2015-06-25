@@ -1,99 +1,41 @@
 package Math::Window2Viewport;
-
-use 5.006;
 use strict;
-use warnings;
-
-=head1 NAME
-
-Math::Window2Viewport - The great new Math::Window2Viewport!
-
-=head1 VERSION
-
-Version 0.01
-
-=cut
-
+use warnings FATAL => 'all';
 our $VERSION = '0.01';
 
+sub new { bless {}, shift }
+
+
+1;
+
+__END__
+=head1 NAME
+
+Math::Window2Viewport - Just another window to viewport mapper.
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+  use Math::Window2Viewport;
 
-Perhaps a little code snippet.
+  my $mapper = Math::Window2Viewport->new(
+      window   => [ 0, 0, 1, 1 ],
+      viewport => [ 1, 0, 10, 10 ],
+  );
 
-    use Math::Window2Viewport;
+  my $x1 = 0.5;
+  my $x2 = $mapper->translate( $x1 );
 
-    my $foo = Math::Window2Viewport->new();
-    ...
+=head1 METHODS
 
-=head1 EXPORT
+=over 4
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+=item C<new()>
 
-=head1 SUBROUTINES/METHODS
-
-=head2 function1
-
-=cut
-
-sub function1 {
-}
-
-=head2 function2
-
-=cut
-
-sub function2 {
-}
+=back
 
 =head1 AUTHOR
 
 Jeff Anderson, C<< <jeffa at cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-math-window2viewport at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Math-Window2Viewport>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Math::Window2Viewport
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker (report bugs here)
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Math-Window2Viewport>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Math-Window2Viewport>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Math-Window2Viewport>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Math-Window2Viewport/>
-
-=back
-
-
-=head1 ACKNOWLEDGEMENTS
-
 
 =head1 LICENSE AND COPYRIGHT
 
@@ -135,7 +77,4 @@ CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
 CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 =cut
-
-1; # End of Math::Window2Viewport
