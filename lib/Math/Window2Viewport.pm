@@ -5,8 +5,7 @@ our $VERSION = '0.01';
 
 sub new {
     my $class = shift;
-    my %args = @_;
-    my $self = bless {%args}, $class;
+    my $self  = bless {@_}, $class;
 
     $self->{Sx} = ( $self->{Vr} - $self->{Vl} ) / ( $self->{Wr} - $self->{Wl} );
     $self->{Sy} = ( $self->{Vt} - $self->{Vb} ) / ( $self->{Wt} - $self->{Wb} );
@@ -26,8 +25,6 @@ sub Dy {
     return int( $self->{Sy} * $y + $self->{Ty} );
 }
 
-
-
 1;
 
 __END__
@@ -44,18 +41,71 @@ Math::Window2Viewport - Just another window to viewport mapper.
       Vb => 9, Vt => 0, Vl => 0, Vr => 9,
   );
 
-  my $x1 = 0.5;
-  my $x2 = $mapper->Dx( $x1 );
+  my ($x, $y) = (0.5, 0.6);
+  my $x2 = $mapper->Dx( $x );
+  my $y2 = $mapper->Dy( $y );
+
+=head1 DESCRIPTION
+
+This module will convert one set of coordinates (the World Window)
+into another set (the Viewport) for the purposes of graphing any
+set of points from one system to another.
 
 =head1 METHODS
 
 =over 4
 
-=item C<new()>
+=item * C<new()>
 
-=item C<Dx()>
+Constructs object. Required parameters:
 
-=item C<Dy()>
+         Wt                  Vt
+    +----------+       +------------+
+    |          |       |            |
+  Wl|  window  |Wr   Vl|  viewport  |Vr
+    |          |       |            |
+    +----------+       +------------+
+         Wb                  Vb
+
+=back
+
+=over 8
+
+=item * C<Wb> world window bottom
+
+=item * C<Wt> world window top
+
+=item * C<Wl> world window left
+
+=item * C<Wr> world window right
+
+=item * C<Vb> viewport bottom
+
+=item * C<Vt> viewport top
+
+=item * C<Vl> viewport left
+
+=item * C<Vr> viewport right
+
+=back
+
+=over 4
+
+=item * C<Dx( x )>
+
+Calculates new point C<Dx> for given point C<x>.
+
+=item * C<Dy( y )>
+
+Calculates new point C<Dy> for given point C<y>.
+
+=back
+
+=head1 SEE ALSO
+
+=over 4
+
+=item * L<https://www.cs.mtsu.edu/~jhankins/files/4250/notes/WinToView/WinToViewMap.html>
 
 =back
 

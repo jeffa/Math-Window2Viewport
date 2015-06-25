@@ -8,12 +8,13 @@ Synopsis
 use Math::Window2Viewport;
 
 my $mapper = Math::Window2Viewport->new(
-    window   => [ 0, 0, 1, 1 ],
-    viewport => [ 1, 0, 10, 10 ],
+    Wb => 0, Wt => 1, Wl => 0, Wr => 1,
+    Vb => 9, Vt => 0, Vl => 0, Vr => 9,
 );
 
-my $x1 = 0.5;
-my $x2 = $mapper->translate( $x1 );
+my ($x, $y) = (0.5, 0.6);
+my $x2 = $mapper->Dx( $x );
+my $y2 = $mapper->Dy( $y );
 
 ```
 
