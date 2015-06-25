@@ -3,7 +3,29 @@ use strict;
 use warnings FATAL => 'all';
 our $VERSION = '0.01';
 
-sub new { bless {}, shift }
+sub new {
+    my $class = shift;
+    my %args = @_;
+    my $self = bless {%args}, $class;
+
+    $self->{Sx} = ( $self->{Vr} - $self->{Vl} ) / ( $self->{Wr} - $self->{Wl} );
+    $self->{Sy} = ( $self->{Vt} - $self->{Vb} ) / ( $self->{Wt} - $self->{Wb} );
+    $self->{Tx} = ( $self->{Vl} * $self->{Wr} - $self->{Wl} * $self->{Vr} ) / ( $self->{Wr} - $self->{Wl} );
+    $self->{Ty} = ( $self->{Vb} * $self->{Wt} - $self->{Wb} * $self->{Vt} ) / ( $self->{Wt} - $self->{Wb} );
+    
+    return $self;
+}
+
+sub Dx {
+    my ($self,$x) = @_;
+    return int( $self->{Sx} * $x + $self->{Tx} );
+}
+
+sub Dy {
+    my ($self,$y) = @_;
+    return int( $self->{Sy} * $y + $self->{Ty} );
+}
+
 
 
 1;
@@ -18,18 +40,22 @@ Math::Window2Viewport - Just another window to viewport mapper.
   use Math::Window2Viewport;
 
   my $mapper = Math::Window2Viewport->new(
-      window   => [ 0, 0, 1, 1 ],
-      viewport => [ 1, 0, 10, 10 ],
+      Wb => 0, Wt => 1, Wl => 0, Wr => 1,
+      Vb => 9, Vt => 0, Vl => 0, Vr => 9,
   );
 
   my $x1 = 0.5;
-  my $x2 = $mapper->translate( $x1 );
+  my $x2 = $mapper->Dx( $x1 );
 
 =head1 METHODS
 
 =over 4
 
 =item C<new()>
+
+=item C<Dx()>
+
+=item C<Dy()>
 
 =back
 
