@@ -1,7 +1,8 @@
 Revision history for Math-Window2Viewport
 
 0.02    
+    - no longer casting return vals with int (client must do this)
 
 0.01    
-        - First version, released on an unsuspecting world.
+    - First version, released on an unsuspecting world.
 

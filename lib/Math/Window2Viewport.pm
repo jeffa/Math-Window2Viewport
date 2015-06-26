@@ -17,12 +17,12 @@ sub new {
 
 sub Dx {
     my ($self,$x) = @_;
-    return int( $self->{Sx} * $x + $self->{Tx} );
+    return $self->{Sx} * $x + $self->{Tx};
 }
 
 sub Dy {
     my ($self,$y) = @_;
-    return int( $self->{Sy} * $y + $self->{Ty} );
+    return $self->{Sy} * $y + $self->{Ty};
 }
 
 1;
@@ -42,8 +42,8 @@ Math::Window2Viewport - Just another window to viewport mapper.
   );
 
   my ($x, $y) = (0.5, 0.6);
-  my $x2 = $mapper->Dx( $x );
-  my $y2 = $mapper->Dy( $y );
+  my $x2 = int( $mapper->Dx( $x ) );
+  my $y2 = int( $mapper->Dy( $y ) );
 
 =head1 DESCRIPTION
 
@@ -110,12 +110,44 @@ Constructs object. Required parameters:
 =item * C<Dx( x )>
 
 Calculates new point C<Dx> for given point C<x>.
+Client is responsible for casting value to int.
 
 =item * C<Dy( y )>
 
 Calculates new point C<Dy> for given point C<y>.
+Client is responsible for casting value to int.
 
 =back
+
+=head1 EXAMPLE
+
+The following will generate a square wave via L<GD::Simple>:
+
+  use GD::Simple;
+  use Math::Window2Viewport;
+
+  my ($width, $height, $res) = (500, 300, .02);
+  my $img = GD::Simple->new( $width, $height );
+  my $mapper = Math::Window2Viewport->new(
+      Wb => -1, Wt => 1, Wl => -1, Wr => 1,
+      Vb => $height, Vt => 0, Vl => 0, Vr => $width,
+  );
+
+  my (%curr,%prev);
+  for (my $x = -1; $x <= 1; $x += $res) {
+      my $y = 0;
+      for (my $i = 1; $i < 20; $i += 2) {
+          $y += 1 / $i * cos( 2 * 3.1459 * $i * $x + ( -3.1459 / 2 ) );
+      }
+      %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
+      $img->moveTo( @prev{qw(dx dy)} );
+      $img->lineTo( @curr{qw(dx dy)} );
+      %prev = %curr;
+  }
+
+  print $img->png;
+
+Try changing the value for C<$res>.
 
 =head1 SEE ALSO
 
