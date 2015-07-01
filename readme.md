@@ -22,15 +22,15 @@ Examples
 --------
 The following images were generated with a [supplied tool](/examples/bin/graph.pl):
 
-[sine wave](https://github.com/jeffa/Math-Window2Viewport/blob/master/examples/sine.png)
+![sine wave](/examples/sine.png)
 
 ![sawtooth wave](/examples/sawtooth.png)
 
-[triangle wave](/examples/triangle.png)
+![triangle wave](/examples/triangle.png)
 
-[square wave](/examples/square.png)
+![square wave](/examples/square.png)
 
-[Fourier sqaure](/examples/fsquare.png)
+![Fourier sqaure](/examples/fsquare.png)
 
 Installation
 ------------
