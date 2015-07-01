@@ -21,10 +21,14 @@ GetOptions (
 pod2usage( -verbose => 0 ) if $help;
 pod2usage( -verbose => 2 ) if $man;
 
-$wave   ||= 'sine';
 $width  ||= 200;
 $height ||= 150;
 $res    ||= .01;
+
+our %map_args = (
+    Wb => 0,        Wt => 1, Wl => 0, Wr => 4,
+    Vb => $height,  Vt => 0, Vl => 0, Vr => $width,
+);
 
 my %waves = (
     sine        => \&sine,
@@ -34,75 +38,61 @@ my %waves = (
     triangle    => \&triangle,
 );
 
-my $sub = $waves{$wave} ? $waves{$wave} : $waves{sine};
-print $sub->( $width, $height, abs( $res ) );
+$wave = 'sine' unless exists $waves{$wave || ''};
+my $sub = $waves{$wave};
+print $sub->( $width, $height, abs( $res ), $wave );
 
 
 sub sine {
-    my ($width,$height,$res) = @_;
-    my $img = GD::Simple->new( $width, $height );
-    my $mapper = Math::Window2Viewport->new(
-        Wb => -1, Wt => 1, Wl => 0, Wr => 3.1459 * 2,
-        Vb => $height, Vt => 0, Vl => 0, Vr => $width,
-    );
-
-    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $res, sub { sin( $_[0] ) } );
+    my $width  = shift;
+    my $height = shift;
+    my $mapper = Math::Window2Viewport->new( %map_args, Wb => -1, Wr => 3.1459 * 2 );
+    return _graph_it( $mapper, GD::Simple->new( $width, $height ), sub { sin( $_[0] ) }, @_ );
 }
 
 sub sawtooth {
-    my ($width,$height,$res) = @_;
-    my $img = GD::Simple->new( $width, $height );
-    my $mapper = Math::Window2Viewport->new(
-        Wb => 0, Wt => 1, Wl => 0, Wr => 4,
-        Vb => $height, Vt => 0, Vl => 0, Vr => $width,
-    );
+    my $width  = shift;
+    my $height = shift;
+    my $mapper = Math::Window2Viewport->new( %map_args );
 
     my $sub = sub {
         my $tmp = $_[0] / $mapper->{Wr} * 2 * 1.618;
         return 1 * ( $tmp - floor( $tmp ) );
     };
 
-    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $res, $sub );
+    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $sub, @_ );
 }
 
 sub triangle {
-    my ($width,$height,$res) = @_;
-    my $img = GD::Simple->new( $width, $height );
-    my $mapper = Math::Window2Viewport->new(
-        Wb => -1, Wt => 1, Wl => 0, Wr => 4,
-        Vb => $height, Vt => 0, Vl => 0, Vr => $width,
-    );
+    my $width  = shift;
+    my $height = shift;
+    my $mapper = Math::Window2Viewport->new( %map_args, Wb => -1 );
 
     my $sub = sub {
         return (2 / 3.1459 ) * asin( sin( $_[0] * 3.1459 ) );
     };
 
-    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $res, $sub );
+    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $sub, @_ );
 }
 
 sub square {
-    my ($width,$height,$res) = @_;
-    my $img = GD::Simple->new( $width, $height );
-    my $mapper = Math::Window2Viewport->new(
-        Wb => -2, Wt => 2, Wl => 0, Wr => 4,
-        Vb => $height, Vt => 0, Vl => 0, Vr => $width,
-    );
+    my $width  = shift;
+    my $height = shift;
+    my $mapper = Math::Window2Viewport->new( %map_args, Wb => -2, Wt => 2 );
 
     my $sign = sub { $_[0] >= 0 ? ($_[0] == 0 ? 0 : 1) : -1 };
     my $sub = sub {
         return .9 * $sign->( sin( 2 * 3.1459 * ( $_[0] - .5 ) / $mapper->{Wr} * 2 ) );
     };
 
-    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $res, $sub );
+    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $sub, @_ );
 }
 
 
 sub fsquare {
-    my ($width,$height,$res) = @_;
-    my $mapper = Math::Window2Viewport->new(
-        Wb => -1, Wt => 1, Wl => 0, Wr => 4,
-        Vb => $height, Vt => 0, Vl => 0, Vr => $width,
-    );
+    my $width  = shift;
+    my $height = shift;
+    my $mapper = Math::Window2Viewport->new( %map_args, Wb => -1, Wr => 2 );
 
     my $sub = sub { 
         my $y = 0;
@@ -112,16 +102,16 @@ sub fsquare {
         $y;
     };
 
-    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $res, $sub );
+    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $sub, @_ );
 }
 
 
 sub _graph_it {
-    my ($mapper,$img,$res,$y_val) = @_;
+    my ($mapper,$img,$yval,$res,$wave) = @_;
 
     my (%curr,%prev);
     for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
-        my $y = $y_val->( $x );
+        my $y = $yval->( $x );
         %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
         if (keys %prev) {
             $img->moveTo( @prev{qw(dx dy)} );
@@ -131,6 +121,9 @@ sub _graph_it {
         }
         %prev = %curr;
     }
+
+    $img->moveTo( $mapper->Dx( $mapper->{Wr} / 3 ), $mapper->Dy( $mapper->{Wb} ) );
+    $img->string( "$wave wave" );
     return $img->png;
 }
 

@@ -33,10 +33,12 @@ my $mapper = Math::Window2Viewport->new(
 for (0 .. $#data) {
     $img->moveTo( $mapper->Dx($_ + .5), $mapper->Dy(1) );
     $img->lineTo( $mapper->Dx($_ + .5), $mapper->Dy($data[$_] - .5) );
-    $img->moveTo( $mapper->Dx( $_ ), $mapper->Dy( 0 ) );
+    $img->moveTo( $mapper->Dx( $_ + .45 ), $mapper->Dy( 0 ) );
     $img->string( $data[$_] );
 }
 
+$img->moveTo( 10, 20 );
+$img->string( "bar chart" );
 print $img->png;
 
 __END__
