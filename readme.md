@@ -22,9 +22,9 @@ Examples
 --------
 The following images were generated with a [supplied tool](/examples/bin/graph.pl):
 
-[sine wave](/examples/sine.png)
+[sine wave](https://github.com/jeffa/Math-Window2Viewport/blob/master/examples/sine.png)
 
-[sawtooth wave](/examples/sawtooth.png)
+![sawtooth wave](/examples/sawtooth.png)
 
 [triangle wave](/examples/triangle.png)
 
