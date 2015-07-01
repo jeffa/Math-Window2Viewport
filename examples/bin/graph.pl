@@ -192,7 +192,7 @@ Prints the manual page and exits.
 
 =head1 DESCRIPTION
 
-B<This program> 
+B<This program> will produce a waveform in PNG format
+on request.
 
 =cut
-
