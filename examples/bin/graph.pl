@@ -29,6 +29,7 @@ $res    ||= .01;
 my %waves = (
     sine        => \&sine,
     square      => \&square,
+    fsquare     => \&fsquare,
     sawtooth    => \&sawtooth,
     triangle    => \&triangle,
 );
@@ -96,6 +97,27 @@ sub triangle {
 }
 
 sub square {
+    my ($width,$height,$res) = @_;
+    my $img = GD::Simple->new( $width, $height );
+    my $mapper = Math::Window2Viewport->new(
+        Wb => -1, Wt => 1, Wl => 0, Wr => 4,
+        Vb => $height, Vt => 0, Vl => 0, Vr => $width,
+    );
+
+    my $sign = sub { $_[0] >= 0 ? ($_[0] == 0 ? 0 : 1) : -1 };
+
+    my (%curr,%prev);
+    for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
+        my $y = 1 * $sign->( sin( 2 * 3.1459 * ( $x - .5 ) / 2 ) );
+        $img->moveTo( @prev{qw(dx dy)} );
+        $img->lineTo( @curr{qw(dx dy)} );
+        %prev = %curr;
+    }
+    return $img->png;
+}
+
+
+sub fsquare {
     my ($width,$height,$res) = @_;
     my $img = GD::Simple->new( $width, $height );
     my $mapper = Math::Window2Viewport->new(
