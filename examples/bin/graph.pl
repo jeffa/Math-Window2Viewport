@@ -100,7 +100,7 @@ sub square {
     my ($width,$height,$res) = @_;
     my $img = GD::Simple->new( $width, $height );
     my $mapper = Math::Window2Viewport->new(
-        Wb => -1, Wt => 1, Wl => 0, Wr => 4,
+        Wb => -2, Wt => 2, Wl => 0, Wr => 4,
         Vb => $height, Vt => 0, Vl => 0, Vr => $width,
     );
 
@@ -108,7 +108,8 @@ sub square {
 
     my (%curr,%prev);
     for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
-        my $y = 1 * $sign->( sin( 2 * 3.1459 * ( $x - .5 ) / 2 ) );
+        my $y = .9 * $sign->( sin( 2 * 3.1459 * ( $x - .5 ) / $mapper->{Wr} * 2 ) );
+        %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
         $img->moveTo( @prev{qw(dx dy)} );
         $img->lineTo( @curr{qw(dx dy)} );
         %prev = %curr;
