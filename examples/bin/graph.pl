@@ -22,8 +22,8 @@ pod2usage( -verbose => 0 ) if $help;
 pod2usage( -verbose => 2 ) if $man;
 
 $wave   ||= 'sine';
-$width  ||= 400;
-$height ||= 300;
+$width  ||= 200;
+$height ||= 150;
 $res    ||= .01;
 
 my %waves = (
@@ -123,8 +123,12 @@ sub _graph_it {
     for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
         my $y = $y_val->( $x );
         %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
-        $img->moveTo( @prev{qw(dx dy)} );
-        $img->lineTo( @curr{qw(dx dy)} );
+        if (keys %prev) {
+            $img->moveTo( @prev{qw(dx dy)} );
+            $img->lineTo( @curr{qw(dx dy)} );
+        } else {
+            $img->moveTo( @curr{qw(dx dy)} );
+        }
         %prev = %curr;
     }
     return $img->png;
