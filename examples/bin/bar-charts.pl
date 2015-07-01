@@ -38,6 +38,7 @@ for (0 .. $#data) {
 }
 
 $img->moveTo( 10, 20 );
+$img->fgcolor('blue');
 $img->string( "bar chart" );
 print $img->png;
 

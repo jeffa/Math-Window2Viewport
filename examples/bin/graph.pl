@@ -123,6 +123,7 @@ sub _graph_it {
     }
 
     $img->moveTo( $mapper->Dx( $mapper->{Wr} / 3 ), $mapper->Dy( $mapper->{Wb} ) );
+    $img->fgcolor('blue');
     $img->string( "$wave wave" );
     return $img->png;
 }
