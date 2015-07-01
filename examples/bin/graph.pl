@@ -60,7 +60,7 @@ sub sawtooth {
     my ($width,$height,$res) = @_;
     my $img = GD::Simple->new( $width, $height );
     my $mapper = Math::Window2Viewport->new(
-        Wb => -1, Wt => 1, Wl => 0, Wr => 4,
+        Wb => 0, Wt => 1, Wl => 0, Wr => 4,
         Vb => $height, Vt => 0, Vl => 0, Vr => $width,
     );
 
