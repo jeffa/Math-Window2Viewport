@@ -18,6 +18,20 @@ my $y2 = $mapper->Dy( $y );
 
 ```
 
+Examples
+--------
+The following images were generated with a [supplied tool](/examples/bin/graph.pl):
+
+[sine wave](/examples/sine.png)
+
+[sawtooth wave](/examples/sawtooth.png)
+
+[triangle wave](/examples/triangle.png)
+
+[square wave](/examples/square.png)
+
+[Fourier sqaure](/examples/fsquare.png)
+
 Installation
 ------------
 To install this module, you should use CPAN. A good starting
