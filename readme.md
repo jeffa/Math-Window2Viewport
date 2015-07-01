@@ -22,14 +22,19 @@ Examples
 --------
 The following images were generated with a [supplied tool](/examples/bin/graph.pl):
 
+Sine wave:
 ![sine wave](/examples/sine.png)
 
+Sawtooth wave:
 ![sawtooth wave](/examples/sawtooth.png)
 
+Triangle wave:
 ![triangle wave](/examples/triangle.png)
 
+Square wave:
 ![square wave](/examples/square.png)
 
+Fourier synthesized square wave:
 ![Fourier sqaure](/examples/fsquare.png)
 
 Installation
