@@ -46,15 +46,7 @@ sub sine {
         Vb => $height, Vt => 0, Vl => 0, Vr => $width,
     );
 
-    my (%curr,%prev);
-    for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
-        my $y = sin( $x );
-        %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
-        $img->moveTo( @prev{qw(dx dy)} );
-        $img->lineTo( @curr{qw(dx dy)} );
-        %prev = %curr;
-    }
-    return $img->png;
+    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $res, sub { sin( $_[0] ) } );
 }
 
 sub sawtooth {
@@ -65,16 +57,12 @@ sub sawtooth {
         Vb => $height, Vt => 0, Vl => 0, Vr => $width,
     );
 
-    my (%curr,%prev);
-    for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
-        my $tmp = $x / $mapper->{Wr} * 2 * 1.618;
-        my $y = 1 * ( $tmp - floor( $tmp ) );
-        %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
-        $img->moveTo( @prev{qw(dx dy)} );
-        $img->lineTo( @curr{qw(dx dy)} );
-        %prev = %curr;
-    }
-    return $img->png;
+    my $sub = sub {
+        my $tmp = $_[0] / $mapper->{Wr} * 2 * 1.618;
+        return 1 * ( $tmp - floor( $tmp ) );
+    };
+
+    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $res, $sub );
 }
 
 sub triangle {
@@ -85,15 +73,11 @@ sub triangle {
         Vb => $height, Vt => 0, Vl => 0, Vr => $width,
     );
 
-    my (%curr,%prev);
-    for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
-        my $y = (2 / 3.1459 ) * asin( sin( $x * 3.1459 ) );
-        %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
-        $img->moveTo( @prev{qw(dx dy)} );
-        $img->lineTo( @curr{qw(dx dy)} );
-        %prev = %curr;
-    }
-    return $img->png;
+    my $sub = sub {
+        return (2 / 3.1459 ) * asin( sin( $_[0] * 3.1459 ) );
+    };
+
+    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $res, $sub );
 }
 
 sub square {
@@ -105,33 +89,39 @@ sub square {
     );
 
     my $sign = sub { $_[0] >= 0 ? ($_[0] == 0 ? 0 : 1) : -1 };
+    my $sub = sub {
+        return .9 * $sign->( sin( 2 * 3.1459 * ( $_[0] - .5 ) / $mapper->{Wr} * 2 ) );
+    };
 
-    my (%curr,%prev);
-    for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
-        my $y = .9 * $sign->( sin( 2 * 3.1459 * ( $x - .5 ) / $mapper->{Wr} * 2 ) );
-        %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
-        $img->moveTo( @prev{qw(dx dy)} );
-        $img->lineTo( @curr{qw(dx dy)} );
-        %prev = %curr;
-    }
-    return $img->png;
+    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $res, $sub );
 }
 
 
 sub fsquare {
     my ($width,$height,$res) = @_;
-    my $img = GD::Simple->new( $width, $height );
     my $mapper = Math::Window2Viewport->new(
         Wb => -1, Wt => 1, Wl => 0, Wr => 4,
         Vb => $height, Vt => 0, Vl => 0, Vr => $width,
     );
 
-    my (%curr,%prev);
-    for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
+    my $sub = sub { 
         my $y = 0;
         for (my $i = 1; $i < 20; $i += 2) {
-            $y += 1 / $i * cos( 2 * 3.1459 * $i * $x + ( -3.1459 / 2 ) );
+            $y += 1 / $i * cos( 2 * 3.1459 * $i * $_[0] + ( -3.1459 / 2 ) );
         }
+        $y;
+    };
+
+    return _graph_it( $mapper, GD::Simple->new( $width, $height ), $res, $sub );
+}
+
+
+sub _graph_it {
+    my ($mapper,$img,$res,$y_val) = @_;
+
+    my (%curr,%prev);
+    for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
+        my $y = $y_val->( $x );
         %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
         $img->moveTo( @prev{qw(dx dy)} );
         $img->lineTo( @curr{qw(dx dy)} );
@@ -139,6 +129,7 @@ sub fsquare {
     }
     return $img->png;
 }
+
 
 # for GD
 # sudo apt-get -y install libgd2-xpm-dev build-essential
