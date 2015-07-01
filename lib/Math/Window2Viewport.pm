@@ -121,7 +121,8 @@ Client is responsible for casting value to int.
 
 =head1 EXAMPLE
 
-The following will generate a square wave via L<GD::Simple>:
+The following will generate a Fourier synthesized
+square wave via L<GD::Simple>:
 
   use GD::Simple;
   use Math::Window2Viewport;
@@ -147,7 +148,8 @@ The following will generate a square wave via L<GD::Simple>:
 
   print $img->png;
 
-Try changing the value for C<$res>.
+Try changing the value for C<$res>. See the example
+directory for more.
 
 =head1 SEE ALSO
 

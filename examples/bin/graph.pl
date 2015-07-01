@@ -5,6 +5,7 @@ use warnings;
 use Pod::Usage;
 use Getopt::Long;
 
+use POSIX;
 use GD::Simple;
 use Math::Trig qw( asin );
 use Math::Window2Viewport;
@@ -13,7 +14,7 @@ GetOptions (
     'wave=s'    => \my $wave,
     'width=i'   => \my $width,
     'height=i'  => \my $height,
-    'res=i'     => \my $res,
+    'res=s'     => \my $res,
     help        => \my $help,
     man         => \my $man,
 );
@@ -28,6 +29,7 @@ $res    ||= .01;
 my %waves = (
     sine        => \&sine,
     square      => \&square,
+    sawtooth    => \&sawtooth,
     triangle    => \&triangle,
 );
 
@@ -46,6 +48,26 @@ sub sine {
     my (%curr,%prev);
     for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
         my $y = sin( $x );
+        %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
+        $img->moveTo( @prev{qw(dx dy)} );
+        $img->lineTo( @curr{qw(dx dy)} );
+        %prev = %curr;
+    }
+    return $img->png;
+}
+
+sub sawtooth {
+    my ($width,$height,$res) = @_;
+    my $img = GD::Simple->new( $width, $height );
+    my $mapper = Math::Window2Viewport->new(
+        Wb => -1, Wt => 1, Wl => 0, Wr => 4,
+        Vb => $height, Vt => 0, Vl => 0, Vr => $width,
+    );
+
+    my (%curr,%prev);
+    for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
+        my $tmp = $x / $mapper->{Wr} * 2 * 1.618;
+        my $y = 1 * ( $tmp - floor( $tmp ) );
         %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
         $img->moveTo( @prev{qw(dx dy)} );
         $img->lineTo( @curr{qw(dx dy)} );
