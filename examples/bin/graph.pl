@@ -6,6 +6,7 @@ use Pod::Usage;
 use Getopt::Long;
 
 use GD::Simple;
+use Math::Trig qw( asin );
 use Math::Window2Viewport;
 
 GetOptions (
@@ -25,8 +26,9 @@ $height ||= 300;
 $res    ||= .01;
 
 my %waves = (
-    sine   => \&sine,
-    square => \&square,
+    sine        => \&sine,
+    square      => \&square,
+    triangle    => \&triangle,
 );
 
 my $sub = $waves{$wave} ? $waves{$wave} : $waves{sine};
@@ -52,6 +54,24 @@ sub sine {
     return $img->png;
 }
 
+sub triangle {
+    my ($width,$height,$res) = @_;
+    my $img = GD::Simple->new( $width, $height );
+    my $mapper = Math::Window2Viewport->new(
+        Wb => -1, Wt => 1, Wl => 0, Wr => 4,
+        Vb => $height, Vt => 0, Vl => 0, Vr => $width,
+    );
+
+    my (%curr,%prev);
+    for (my $x = $mapper->{Wl}; $x <= $mapper->{Wr}; $x += $res) {
+        my $y = (2 / 3.1459 ) * asin( sin( $x * 3.1459 ) );
+        %curr = ( dx => $mapper->Dx( $x ), dy => $mapper->Dy( $y ) );
+        $img->moveTo( @prev{qw(dx dy)} );
+        $img->lineTo( @curr{qw(dx dy)} );
+        %prev = %curr;
+    }
+    return $img->png;
+}
 
 sub square {
     my ($width,$height,$res) = @_;
