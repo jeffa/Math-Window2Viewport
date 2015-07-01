@@ -19,6 +19,7 @@ GetOptions (
 pod2usage( -verbose => 0 ) if $help;
 pod2usage( -verbose => 2 ) if $man;
 
+@data = split(/,/,join(',',@data));
 @data = ( 4, 3, 10, 7, 2 ) unless @data;
 $width  ||= 200;
 $height ||= 150;
@@ -32,6 +33,8 @@ my $mapper = Math::Window2Viewport->new(
 for (0 .. $#data) {
     $img->moveTo( $mapper->Dx($_ + .5), $mapper->Dy(1) );
     $img->lineTo( $mapper->Dx($_ + .5), $mapper->Dy($data[$_] - .5) );
+    $img->moveTo( $mapper->Dx( $_ ), $mapper->Dy( 0 ) );
+    $img->string( $data[$_] );
 }
 
 print $img->png;
@@ -58,9 +61,13 @@ graph.pl [options]
 
 =item B<--data>
 
-The data to chart. Specify multiple numbers.
+The data to chart. Specify multiple args:
 
   --data=5 --data=10 --data=3
+
+or use a comma delimited string:
+
+  --data=21,45,30,67,10
 
 =item B<--height>
 
