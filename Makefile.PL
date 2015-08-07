@@ -19,6 +19,15 @@ WriteMakefile(
     },
     PREREQ_PM => {
     },
+    (! eval { ExtUtils::MakeMaker->VERSION(6.46) } ? () :
+        (META_ADD => {
+            resources => {
+                homepage   => 'https://github.com/jeffa/Math-Window2Viewport',
+                repository => 'https://github.com/jeffa/Math-Window2Viewport.git',
+                bugtracker => 'https://github.com/jeffa/Math-Window2Viewport/issues',
+            },
+        })
+    ),
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Math-Window2Viewport-*' },
 );
