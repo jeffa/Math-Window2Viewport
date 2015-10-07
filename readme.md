@@ -1,6 +1,6 @@
 Math-Window2Viewport
 ====================
-Just another window to viewport mapper.
+Just another window to viewport mapper. [![CPAN version](https://badge.fury.io/pl/Math-Window2Viewport.svg)](https://badge.fury.io/pl/Math-Window2Viewport)
 
 Synopsis
 --------
