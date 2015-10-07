@@ -1,6 +1,7 @@
 Revision history for Math-Window2Viewport
 
 0.04    
+    - added examples to POD
 
 0.03    
     - added github meta to makefile
