@@ -153,15 +153,13 @@ directory for more.
 
 =begin HTML
 
-<h1>EXAMPLES</h1>
-<ol>
-    <li>Bar chart<br/><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/bar-chart.png" alt="Bar chart" /></li>
-    <li>Sine wave<br/><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/sine.png" alt="Sine wave" /></li>
-    <li>Sawtooth wave<br/><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/sawtooth.png" alt="Sawtooth wave" /></li>
-    <li>Triangle wave<br/><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/triangle.png" alt="Triangle wave" /></li>
-    <li>Square wave<br/><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/square.png" alt="Square wave" /></li>
-    <li>Fourier square<br/><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/fsquare.png" alt="Fourier square" /></li>
-</ol>
+<h1>RENDERED EXAMPLES</h1>
+<p><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/bar-chart.png" alt="Bar chart" /></p>
+<p><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/sine.png" alt="Sine wave" /></p>
+<p><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/sawtooth.png" alt="Sawtooth wave" /></p>
+<p><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/triangle.png" alt="Triangle wave" /></p>
+<p><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/square.png" alt="Square wave" /></p>
+<p><img src="https://raw.githubusercontent.com/jeffa/Math-Window2Viewport/master/examples/fsquare.png" alt="Fourier square" /></p>
 
 =end HTML
 
