@@ -24,7 +24,6 @@ WriteMakefile(
             resources => {
                 homepage   => 'https://github.com/jeffa/Math-Window2Viewport',
                 repository => 'https://github.com/jeffa/Math-Window2Viewport.git',
-                bugtracker => 'https://github.com/jeffa/Math-Window2Viewport/issues',
             },
         })
     ),

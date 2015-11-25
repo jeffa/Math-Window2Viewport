@@ -1,6 +1,7 @@
 Revision history for Math-Window2Viewport
 
 0.04    
+    - fix bug tracker location    
     - added examples to POD
 
 0.03    
