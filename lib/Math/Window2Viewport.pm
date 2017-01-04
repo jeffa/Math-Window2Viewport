@@ -1,7 +1,7 @@
 package Math::Window2Viewport;
 use strict;
 use warnings FATAL => 'all';
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 sub new {
     my $class = shift;
