@@ -1,6 +1,6 @@
 Math::Window2Viewport
 =====================
-Just another window to viewport mapper. [![CPAN Version](https://badge.fury.io/pl/Math-Window2Viewport.svg)](https://metacpan.org/pod/Math::Window2Viewport) [![Build Status](https://api.travis-ci.org/jeffa/Math-Window2Viewport.svg?branch=master)](https://travis-ci.org/jeffa/Math-Window2Viewport)
+Just another window to viewport mapper. [![CPAN Version](https://badge.fury.io/pl/Math-Window2Viewport.svg)](https://metacpan.org/pod/Math::Window2Viewport)
 
 Synopsis
 --------
